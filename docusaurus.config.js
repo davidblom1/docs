@@ -2,7 +2,7 @@ module.exports = {
   title: 'USC Makers Docs',
   tagline: 'Helping you build your next project!',
   url: 'https://viterbimakers.usc.edu/',
-  baseUrl: '/',
+  baseUrl: '/uscmakers-docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/icon.png',
