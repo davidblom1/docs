@@ -2,12 +2,12 @@ module.exports = {
   title: 'USC Makers Docs',
   tagline: 'Helping you build your next project!',
   url: 'https://viterbimakers.usc.edu/',
-  baseUrl: '/uscmakers-docs/',
+  baseUrl: '/docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/icon.png',
   organizationName: 'uscmakers', // Usually your GitHub org/user name.
-  projectName: 'uscmakers-docs', // Usually your repo name.
+  projectName: 'docs', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'USC Makers Docs',
