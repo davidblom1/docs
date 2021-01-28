@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[15],{84:function(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Welcome","permalink":"/uscmakers-docs/blog/welcome"},{"title":"Hello","permalink":"/uscmakers-docs/blog/hello-world"},{"title":"Hola","permalink":"/uscmakers-docs/blog/hola"}]}')}}]);
