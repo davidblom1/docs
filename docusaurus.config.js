@@ -94,7 +94,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/uscmakers/uscmakers-docs/edit/master',
+            'https://github.com/uscmakers/docs/edit/master',
         },
         blog: {
           showReadingTime: true,
