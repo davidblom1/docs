@@ -1,7 +1,9 @@
 module.exports = {
   someSidebar: {
-    'Getting Started': ['installation', 'doc1', 'mdx'],
+    'Getting Started': ['intro', 'installation'],
     Components: ['clue', 'components'],
-    Samples: ['samples']
+    'Sample Projects': ['samples/dope-robot', 'samples/awesome-wearable'],
+    'Page Examples': ['doc1', 'mdx'],
+
   },
 };
