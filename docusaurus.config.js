@@ -1,8 +1,8 @@
 module.exports = {
   title: 'USC Makers Docs',
   tagline: 'Helping you build your next project!',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  url: 'https://viterbimakers.usc.edu/',
+  baseUrl: '/docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/icon.png',
@@ -37,12 +37,20 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Style Guide',
-              to: 'docs/',
+              label: 'Installation',
+              to: 'docs/installation/',
             },
             {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
+              label: 'Adafruit Clue',
+              to: 'docs/clue/',
+            },
+            {
+              label: 'Components',
+              to: 'docs/components/',
+            },
+            {
+              label: 'Style Guide',
+              to: 'docs/',
             },
           ],
         },
@@ -86,7 +94,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/uscmakers/makeathon2021',
+            'https://github.com/uscmakers/uscmakers-docs/edit/master',
         },
         blog: {
           showReadingTime: true,
