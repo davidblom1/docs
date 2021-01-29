@@ -45,7 +45,7 @@ module.exports = {
               to: 'docs/clue/',
             },
             {
-              label: 'Components',
+              label: 'Kit Components',
               to: 'docs/components/',
             },
             {

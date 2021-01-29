@@ -7,7 +7,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Components
+
+Check out all of these components that can do so many things!
 
 ---
 ### 7-color Flash LED
