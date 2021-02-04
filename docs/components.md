@@ -871,7 +871,7 @@ y = analogio.AnalogIn(board.A0)
 while True:
   # Access the pin values with .value tag!
   
-  #print(button.value)
+  print("Button value: " + button.value)
   #print(x.value)
   #print(y.value)
 ```
