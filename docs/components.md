@@ -440,7 +440,7 @@ while True:
 ---
 ### Digital Temperature Sensor
 
-This is a description about what the module is/does so that people will know what they can use it for!
+This sensor monitors temperature and, if the temperature is above a specific threshold, outputs a logical 1. If the temp is below the threshold, it outputs a 0. How do you set this threshold? Why, by adjusting the trim pot! using a small flathead screwdriver, you can increase (clockwise) or decrease (counter-clockwise) the threshold temperature. 
 
 <img
   alt="Digital Temperature Sensor"
@@ -448,8 +448,7 @@ This is a description about what the module is/does so that people will know wha
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+
 
 <Tabs
   defaultValue="arduino"
@@ -461,16 +460,22 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
+#define LED_PIN 13
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(6, INPUT);
 }
      
 // the loop function runs over and over again forever
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  if(digitalRead(6) == HIGH) {
+    digitalWrite(LED_PIN, HIGH);
+  } else {
+    digitalWrite(LED_PIN, LOW);
+  }
+  
 }
 ```
 
