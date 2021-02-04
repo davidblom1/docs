@@ -811,7 +811,7 @@ while True:
 ---
 ### Joystick
 
-This is a description about what the module is/does so that people will know what they can use it for!
+This is a description of how to use this analog joystick!
 
 <img
   alt="Joystick"
@@ -849,21 +849,31 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
-import board
+
+# This joystick has 3 values - 1 digital for the button, and 2 analogs for the x and y directions!
+
 import digitalio
-import time
+import analogio
+import board
 
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
-led.direction = digitalio.Direction.OUTPUT
+# Set the pin number
+button = digitalio.DigitalInOut(board.D6)
+# Input/output
+button.direction = digitalio.Direction.INPUT
+# Pullup resistor
+button.pull = digitalio.Pull.UP
 
-# Loop forever
+x = analogio.AnalogIn(board.A4)
+y = analogio.AnalogIn(board.A0)
+
+
+
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+  # Access the pin values with .value tag!
+  
+  #print(button.value)
+  #print(x.value)
+  #print(y.value)
 ```
 
 </TabItem>
