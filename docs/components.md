@@ -441,6 +441,7 @@ while True:
 ### Digital Temperature Sensor
 
 This sensor monitors temperature and, if the temperature is above a specific threshold, outputs a logical 1. If the temp is below the threshold, it outputs a 0. How do you set this threshold? Why, by adjusting the trim pot! using a small flathead screwdriver, you can increase (clockwise) or decrease (counter-clockwise) the threshold temperature. 
+Note: Ben and Baran could not get this thing to work properly. If you manage to get it functioning properly you will get a special prize.
 
 <img
   alt="Digital Temperature Sensor"
@@ -1500,8 +1501,8 @@ This is a description about what the module is/does so that people will know wha
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The relay module is an effective way to convert existing appliances into smart-objects. The relay is a heavy-duty, digitally controlled switch that can handle anything from battery power to wall current. The relay has 3 control pins (+V, Gnd, and Signal) and three screw terminals (NC, common, NO). When no voltage is applied to the relay, the NC (Normally Closed) terminal and the common (middle) terminals are connected. When a logical high voltage is applied to the signal pin, an electromagnet removes the NC-Common connection and connects the common and NO (normally open) terminals. You could, for example, splice the the power cord running to your toaster -- BOOM SMART TOASTER!
+DISCLAIMER: do NOT splice any power cords running high voltage or current!! Getting zapped by an improperly shielded power cable can KILL you. It can also start fires. Consult with an expert before modifying any existing power cords. This module can be used effectively in low-power applications as well!
 
 <Tabs
   defaultValue="arduino"
@@ -1513,16 +1514,23 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  // put your setup code here, to run once:
+  pinMode(2, OUTPUT); // pin 2 is connected to the signal pin of the relay
+  digitalWrite(2, LOW);
+  pinMode(5, INPUT_PULLUP); // pin 5 is the left-hand Clue button
 }
-     
-// the loop function runs over and over again forever
+
+short relay_state = 0;
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  // put your main code here, to run repeatedly:
+  if(!digitalRead(5)) {
+    if(!relay_state) relay_state = 1;
+    else relay_state = 0;
+    delay(200); //EZ debounce
+  }
+  if(relay_state) digitalWrite(2, HIGH);
+  else digitalWrite(2, LOW);
 }
 ```
 
