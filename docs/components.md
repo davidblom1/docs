@@ -156,16 +156,31 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+#include <math.h> //needed to calculate th
+
+double ConvertTemp(int RawTemp) { //convert raw sensor data to a useable temperature, lots of math
+
+  double Temp;
+  Temp = log(10000.0*((1024.0/RawTemp-1))); 
+  Temp = 1 / (0.001129148 + (0.000234125 + (0.0000000876741 * Temp * Temp ))* Temp );
+  Temp=Temp-273.15;
+  Temp = (Temp * 9.0)/ 5.0 + 32.0; // Convert Celcius to Fahrenheit
+  return Temp;
 }
-     
-// the loop function runs over and over again forever
+
+int sensorPin = A2; // select the input pin for the potentiometer, can change this to any pin 
+                    // with a triangle next to it on the dragontail 
+
+void setup() {
+  Serial.begin(9600); //serial monitor, available on ArduinoIDE
+}
+
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  int readVal=analogRead(sensorPin); //read sensor data 
+  double temp =  ConvertTemp(readVal); //convert temperature data 
+ 
+ Serial.println(temp);  // display tempature on the serial monitor  
+ delay(500);
 }
 ```
 
