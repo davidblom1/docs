@@ -334,16 +334,17 @@ while True:
 ---
 ### Button
 
-This is a description about what the module is/does so that people will know what they can use it for!
+Part: HW-483
 
 <img
   alt="Button"
-  src={useBaseUrl('img/components/button.jpeg')}
+  src={useBaseUrl('img/components/buttonAlone.jpg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The pushbutton is pretty straightforward: you can use it as an input, and check whether is pushing the button or not. As you can see in the diagram above, left == gnd, center == vdd, and right == data.
+Note: A low input indicates that the button is pressed.
+
 
 <Tabs
   defaultValue="arduino"
@@ -355,16 +356,24 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
+const int buttonPin = 2; //set these as constants
+int buttonState = 0; 
+
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT); //using the inbuilt LED on the back of the clue!
+  pinMode(buttonPin, INPUT); //set the pushbutton sensor as an input
 }
-     
-// the loop function runs over and over again forever
+ 
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  buttonState = digitalRead(buttonPin);//read the state of the button
+
+  if (buttonState == HIGH) { //if the button is NOT pressed
+    //turn LED on
+    digitalWrite(LED_BUILTIN, HIGH);
+  } else { //if the button is pressed
+    // turn LED off:
+    digitalWrite(LED_BUILTIN, LOW);
+  }
 }
 ```
 
@@ -372,21 +381,20 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
 import digitalio
 import time
-
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
+#here I decide to use an LED to check the status of the button
+led = digitalio.DigitalInOut(board.D7) #set led pin
+button = digitalio.DigitalInOut(board.D1) #set button pin
 led.direction = digitalio.Direction.OUTPUT
+button.direction = digitalio.Direction.INPUT
 
-# Loop forever
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+  if button.value: #if the button is off
+    led.value = False #led is off
+  else: #if the button is on
+    led.value = True #led is on
 ```
 
 </TabItem>
@@ -1339,16 +1347,17 @@ while True:
 ---
 ### Photo Resistor
 
-This is a description about what the module is/does so that people will know what they can use it for!
+Part: HW-486
+This is a photoresistor sensor, which means that it can measure the amount of ambient light! 
 
 <img
   alt="Photo Resistor"
-  src={useBaseUrl('img/components/photo_resistor.jpeg')}
+  src={useBaseUrl('img/components/photo_resistor.jpg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+See the image above to see the gnd, vdd, and data pins. You need to declare this as an input, and please note that you have to select an ANALOG pin and make an ANALOG measurement. 
+Note: The sensor is not very accurate, but should be good enough to distinguish between night and day. 
 
 <Tabs
   defaultValue="arduino"
@@ -1360,16 +1369,18 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
+const int photoPin = A2; //set these as constants
+int val = 0; 
+
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(photoPin, INPUT); //set the photoresistor sensor as an input
+  Serial.begin(9600);
 }
-     
-// the loop function runs over and over again forever
+ 
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  val = analogRead(photoPin);//read the value of the photoresistor
+  delay(1000);
+  Serial.println(val, DEC); //print on the serial monitor
 }
 ```
 
@@ -1377,21 +1388,19 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
-import digitalio
 import time
+from analogio import AnalogIn
+ 
+photo = AnalogIn(board.A2)
 
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
-led.direction = digitalio.Direction.OUTPUT
-
-# Loop forever
+def convertToVoltage(pin):
+    return (pin.value * 3) / 65536 #convert it to a voltage value between 0-3V
+ 
+ 
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+    print((get_voltage(photo),)) #check what the voltage is- if the voltage is higher, it is brighter
+    time.sleep(1) #sleep for a second
 ```
 
 </TabItem>
@@ -1712,16 +1721,16 @@ while True:
 ---
 ### Shock Sensor
 
-This is a description about what the module is/does so that people will know what they can use it for!
+Part Number: HW-513
 
 <img
   alt="Shock Sensor"
-  src={useBaseUrl('img/components/shock_sensor.jpeg')}
+  src={useBaseUrl('img/components/shock_sensor.jpg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+As you can see in the above image, the left-most pin is gnd, the center pin is power, and the right pin is data. This sensor is an input, and can detect "shocks". You can apply shock to this sensor by dropping it or hitting the blue part lightly with your finger. 
+Note: A low read from the sensor means it detected a shock.
 
 <Tabs
   defaultValue="arduino"
@@ -1733,16 +1742,25 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
+const int shockPin = 1; //set these as constants
+int val = 0; 
+
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT); //using the inbuilt LED on the back of the clue!
+  pinMode(shockPin, INPUT); //set the shock sensor as an input
 }
-     
-// the loop function runs over and over again forever
+ 
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  val = digitalRead(shockPin);//read the state of the button
+
+  if (val == LOW) { //if a shock is detected
+    //turn LED on
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(1000); //delay
+  } else { //if the shock is not detected
+    // turn LED off:
+    digitalWrite(LED_BUILTIN, LOW);
+  }
 }
 ```
 
@@ -1750,21 +1768,21 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
 import digitalio
 import time
-
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
+ 
+led = digitalio.DigitalInOut(board.D7) #set led pin
+shock = digitalio.DigitalInOut(board.D1) #set shock pin
 led.direction = digitalio.Direction.OUTPUT
+shock.direction = digitalio.Direction.INPUT
 
-# Loop forever
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+  if shock.value: #if the shock is not detected
+    led.value = False; #led is off
+  else: #if the shock is detected
+    led.value = True; #led is on
+    time.sleep(1); #delay so you can see the led light 
 ```
 
 </TabItem>
@@ -2017,7 +2035,8 @@ while True:
 ---
 ### Tilt Switch
 
-This is a description about what the module is/does so that people will know what they can use it for!
+This tilt switch will be able to detect whether is tilting to the right or the left.
+Part: HW-505
 
 <img
   alt="Tilt Switch"
@@ -2025,8 +2044,7 @@ This is a description about what the module is/does so that people will know wha
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+Please see the above image to see where the vdd, gnd, and data pins are. The tilt sensor is used as a digital input, and if the bead of mercury is tilted towards the base, then the led on the sensor will flash. If the bead of mercury is tilted away from the base, then the led on the sensor will turn off.
 
 <Tabs
   defaultValue="arduino"
@@ -2038,16 +2056,24 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
+const int tiltPin = 2; //set these as constants
+int val = 0;
+
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT); //using the inbuilt LED on the back of the clue!
+  pinMode(tiltPin, INPUT); //set the shock sensor as an input
 }
-     
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  val = digitalRead (tiltPin) ;// read the values assigned to the digital interface 3 val
+  if (val == HIGH) // When the mercury tilt switch sensor detects a signal, LED flashes
+  {
+    digitalWrite (LED_BUILTIN, HIGH);
+  }
+  else
+  {
+    digitalWrite (LED_BUILTIN, LOW);
+  }
 }
 ```
 
@@ -2055,21 +2081,21 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
 import digitalio
 import time
+ 
+tilt = digitalio.DigitalInOut(board.D2) #set tilt sensor pin
+tilt.direction = digitalio.Direction.INPUT
 
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
+led = digitalio.DigitalInOut(board.D7) #set led pin
 led.direction = digitalio.Direction.OUTPUT
 
-# Loop forever
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+  if tilt.value: #if the tilt sensor is tilted towards the base
+    led.value = True; #led is off
+  else: #if the tilt sensor is tilted away from the base
+    led.value = False; #led is on
 ```
 
 </TabItem>
