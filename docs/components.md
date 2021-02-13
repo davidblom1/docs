@@ -1155,7 +1155,7 @@ This sensor produces a voltage when placed in a magnetic field. In practice, it 
 
 <img
   alt="Linear Hall Effect Sensor"
-  src={useBaseUrl('img/components/linear_hall_effect_sensor.jpeg')}
+  src="static/img/components/linear_hall_effect_sensor.jpeg"
   class="component-image"
 />
 
@@ -1169,7 +1169,7 @@ Key things:
 <li>It has a signal output indication. As shown in the photo below, when a magnet is held near the transistor, the built-in indication light (on the left in the photo) lights up. (This is not programmed by the user, it comes like this.)
 <img
   alt="Linear Hall Effect Sensor with Magnet"
-  src={useBaseUrl('img/components/linear_hall_effect_sensor2.jpeg')}
+  src="static/img/components/linear_hall_effect_sensor2.jpeg"
   class="component-image"
 />
 </li>
