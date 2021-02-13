@@ -74,7 +74,8 @@ while True:
 ---
 ### Analog Hall Effect Sensor
 
-This is a description about what the module is/does so that people will know what they can use it for!
+HW-495
+
 
 <img
   alt="Analog Hall Effect Sensor"
@@ -1141,8 +1142,8 @@ while True:
 
 ---
 ### Linear Hall Effect Sensor
-
-This is a description about what the module is/does so that people will know what they can use it for!
+HW-509
+This sensor produces a voltage when placed in a magnetic field. In practice, it is very similar to the digital hall effect sensor (HW-492) and the analog hall effect sensor (HW-495), however, it has an both analog and digital pins.
 
 <img
   alt="Linear Hall Effect Sensor"
@@ -1150,8 +1151,23 @@ This is a description about what the module is/does so that people will know wha
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+
+
+The linear hall effect sensor is an input device that is used to measure the presence and/or strength of a magnetic field. As labeled on the component and in the picture above, the pins from left to right are: Analog input, GND, VDD, Digital input. 
+Key things:
+<ul>
+<li>This sensor can produce an analog or a digital value, as it has an ADC built-in. </li>
+<li>It has a built-in sensitivity adjustment (fine adjustment). This is the bronze-colored adjuster on the blue piece. </li>
+<li>It has a signal output indication. As shown in the photo below, when a magnet is held near the transistor, the built-in indication light (on the left in the photo) lights up. (This is not programmed by the user, it comes like this.)
+<img
+  alt="Linear Hall Effect Sensor with Magnet"
+  src={useBaseUrl('img/components/linear_hall_effect_sensor2.jpeg')}
+  class="component-image"
+/>
+</li>
+
+</ul>
+When you hold a magnet near the black transistor on the sensor (at the top of the photo), the digital reading should be 1 (HIGH). The analog sensor's reading is a numerical value that is different depending on magnet strength, sensitivity adjustment, magnet proximity, and other factors.
 
 <Tabs
   defaultValue="arduino"
@@ -1163,16 +1179,28 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+int linearHallSensorDigitalPin = 8; // define linear hall sensor digital pin
+int linearHallSensorAnalogPin = 2; // define linear hall sensor analog pin
+//int hallSensorPin = 9;
+//int buttonpin = 3; // define Metal Touch Sensor Interface
+int linearHallSensorDigitalVal, linearHallSensorAnalogVal; // define numeric variables val
+int lineCount = 0;  // there are 30 lines on screen for printing
+void setup ()
+{
+  Serial.begin(9600);
+  // define sensor pins as input interface
+  pinMode (linearHallSensorDigitalPin, INPUT) ; 
+  pinMode (linearHallSensorAnalogPin, INPUT) ; 
 }
-     
-// the loop function runs over and over again forever
-void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+void loop ()
+{
+  linearHallSensorDigitalVal = digitalRead (linearHallSensorDigitalPin) ;
+  linearHallSensorAnalogVal = analogRead (linearHallSensorAnalogPin) ;
+
+  Serial.print("Linear hall sensor - digital: ");
+  Serial.print(linearHallSensorDigitalVal);
+  Serial.print(" , analog: ");
+  Serial.println(linearHallSensorAnalogVal);
 }
 ```
 
@@ -1180,21 +1208,7 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
-import board
-import digitalio
-import time
-
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
-led.direction = digitalio.Direction.OUTPUT
-
-# Loop forever
-while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+# hehe didn't do the circuitpython yet but i will soon -anj
 ```
 
 </TabItem>
