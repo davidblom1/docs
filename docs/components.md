@@ -1170,7 +1170,7 @@ The linear hall effect sensor is an input device that is used to measure the pre
 Key things:
 <ul>
 <li>This sensor can produce an analog or a digital value, as it has an ADC built-in. </li>
-<li>It has a built-in sensitivity adjustment (fine adjustment). This is the bronze-colored adjuster on the blue piece. You can use your fingernail or flathead screwdriver or something to adjust it. Turning the sensitivity fine adjustment <b>counter clockwise</b> makes the analog hall sensor measurement </b>more sensitive</b>, and turning it clockwise makes it less sensitive. </li>
+<li>It has a built-in sensitivity adjustment (fine adjustment). This is the bronze-colored adjuster on the blue piece. You can use your fingernail or flathead screwdriver or something to adjust it. Turning the sensitivity fine adjustment **counter clockwise** makes the analog hall sensor measurement **more sensitive**, and turning it clockwise makes it less sensitive. </li>
 <li>It has a signal output indication. As shown in the photo below, when a magnet is held near the transistor, the built-in indication light (on the left in the photo) lights up. (This is not programmed by the user, it comes like this.)
 <img
   alt="Linear Hall Effect Sensor with Magnet"
