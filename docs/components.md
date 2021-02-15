@@ -714,7 +714,7 @@ while True:
 ---
 ### IR Emitter
 
-This is a description about what the module is/does so that people will know what they can use it for!
+This looks like a normal LED, but the light it emits is on the infra-red spectrum. when you turn it on and don't see anything, don't panic! Humans cannot see infra-red light. Who can? The IR receiver can! Also, some cameras can pick it up, and it is used in night vision goggles. Most remotes use IR blips to communicate, so with this emitter you could emulate almost any remote! 
 
 <img
   alt="IR Emitter"
@@ -722,8 +722,7 @@ This is a description about what the module is/does so that people will know wha
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The IR emitter has three connections -- power, ground, and S. The S pin, when high, will turn on the IR emitter. Remember that you won't be able to see any light coming out. If you want to test the IR emitter's functionality, the following codes have also incorporated the IR receiver. Make sure the receiver and the emitter are pointed at each other.
 
 <Tabs
   defaultValue="arduino"
@@ -735,16 +734,20 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(2, OUTPUT); // pin 2 is connected to the signal pin of the IR Emitter
+  digitalWrite(2, LOW);
+  pinMode(4, INPUT_PULLUP); // pin 4 is the IR Receiver connection
+  Serial.begin(115200);
 }
-     
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  // put your main code here, to run repeatedly:
+  digitalWrite(2, HIGH);
+  Serial.println(digitalRead(4));
+  delay(100);
+  digitalWrite(2, LOW);
+  Serial.println(digitalRead(4));
 }
 ```
 
@@ -773,18 +776,17 @@ while True:
 </Tabs>
 
 ---
-### IR Reciever
+### IR Receiver
 
-This is a description about what the module is/does so that people will know what they can use it for!
-
+The IR receiver is a sensor that measures IR light. You can use this in combination with the IR emitter for easy wireless communication! This emitter is similar to the one you would find in almost any remote-controlled appliance. 
 <img
-  alt="IR Reciever"
+  alt="IR Receiver"
   src={useBaseUrl('img/components/ir_reciever.jpeg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The code below simply demonstrates how to read data from the IR receiver. Point any remote control at the receiver and see the indicator light on the sensor blink rapidly! You can also see the signal in the serial monitor, but be quick because it happens very fast. the signal pin of the module should be connected to pin 6.
+
 
 <Tabs
   defaultValue="arduino"
@@ -796,16 +798,14 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  // put your setup code here, to run once:
+  pinMode(6, INPUT);
+  Serial.begin(115200);
 }
-     
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  Serial.println(digitalRead(6));
 }
 ```
 
