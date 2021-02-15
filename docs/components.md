@@ -1030,16 +1030,14 @@ while True:
 ---
 ### Light Blocking Module
 
-This is a description about what the module is/does so that people will know what they can use it for!
-
+The light blocking module (HW-487) has a u-shaped component that detects whether something is blocking light from passing between the two 
 <img
   alt="Light Blocking Module"
   src={useBaseUrl('img/components/light_blocking_module.jpeg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The microcontroller should treat this as a digital input device.
 
 <Tabs
   defaultValue="arduino"
@@ -1051,16 +1049,23 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+int lightBlockingSensorPin = 2;
+int ledPin = 14;
+int lightBlockingSensorVal; // define numeric variables val
+void setup ()
+{
+  Serial.begin(9600);
+  pinMode (lightBlockingSensorPin, INPUT) ; 
+  pinMode (ledPin, OUTPUT) ; 
 }
-     
-// the loop function runs over and over again forever
-void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+void loop ()
+{
+  lightBlockingSensorVal = digitalRead (lightBlockingSensorPin) ;
+
+  digitalWrite(ledPin, lightBlockingSensorVal);   // light up LED when no light is detected by sensor
+
+  Serial.print("Light blocking sensor blocked?: ");
+  Serial.println(lightBlockingSensorVal);
 }
 ```
 
