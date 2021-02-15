@@ -748,6 +748,7 @@ void loop() {
   delay(100);
   digitalWrite(2, LOW);
   Serial.println(digitalRead(4));
+  delay(100);
 }
 ```
 
