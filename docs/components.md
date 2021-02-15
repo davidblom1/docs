@@ -1033,7 +1033,7 @@ while True:
 The light blocking module (HW-487) has a u-shaped component that detects whether something is blocking light from passing between the two 
 <img
   alt="Light Blocking Module"
-  src="../static/img/light_blocking_module.jpeg"
+  src="../static/img/components/light_blocking_module.jpeg"
   class="component-image"
 />
 
@@ -1073,21 +1073,20 @@ void loop ()
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
 import digitalio
-import time
+ 
+lightBlockingSensor = digitalio.DigitalInOut(board.D2) #set light blocking sensor pin
+lightBlockingSensor.direction = digitalio.Direction.INPUT
 
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
+led = digitalio.DigitalInOut(board.D14) #set led pin
 led.direction = digitalio.Direction.OUTPUT
 
-# Loop forever
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+  if lightBlockingSensor.value: #if light detects no light (something is blocking it)
+    led.value = True; # led is on
+  else: #if nothing is blocking the light blocking sensor
+    led.value = False; #led is off
 ```
 
 </TabItem>
