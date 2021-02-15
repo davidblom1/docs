@@ -1033,7 +1033,7 @@ while True:
 The light blocking module (HW-487) has a u-shaped component that detects whether something is blocking light from passing between the two 
 <img
   alt="Light Blocking Module"
-  src={useBaseUrl('img/components/light_blocking_module.jpeg')}
+  src="../static/img/light_blocking_module.jpeg"
   class="component-image"
 />
 
