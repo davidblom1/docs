@@ -1166,11 +1166,11 @@ This sensor produces a voltage when placed in a magnetic field. In practice, it 
 
 
 
-The linear hall effect sensor is an input device that is used to measure the presence and/or strength of a magnetic field. As labeled on the component and in the picture above, the pins from left to right are: Analog input, GND, VDD, Digital input. 
+The linear hall effect sensor is an input device that is used to measure the presence and/or strength of a magnetic field. As labeled on the component itself and in the picture above, the pins from left to right are: Analog input, GND, VDD, Digital input. 
 Key things:
 <ul>
 <li>This sensor can produce an analog or a digital value, as it has an ADC built-in. </li>
-<li>It has a built-in sensitivity adjustment (fine adjustment). This is the bronze-colored adjuster on the blue piece. </li>
+<li>It has a built-in sensitivity adjustment (fine adjustment). This is the bronze-colored adjuster on the blue piece. You can use your fingernail or flathead screwdriver or something to adjust it. Turning the sensitivity fine adjustment <b>counter clockwise</b> makes the analog hall sensor measurement </b>more sensitive</b>, and turning it clockwise makes it less sensitive. </li>
 <li>It has a signal output indication. As shown in the photo below, when a magnet is held near the transistor, the built-in indication light (on the left in the photo) lights up. (This is not programmed by the user, it comes like this.)
 <img
   alt="Linear Hall Effect Sensor with Magnet"
