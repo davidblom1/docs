@@ -74,7 +74,8 @@ while True:
 ---
 ### Analog Hall Effect Sensor
 
-This is a description about what the module is/does so that people will know what they can use it for!
+HW-495
+
 
 <img
   alt="Analog Hall Effect Sensor"
@@ -713,7 +714,7 @@ while True:
 ---
 ### IR Emitter
 
-This is a description about what the module is/does so that people will know what they can use it for!
+This looks like a normal LED, but the light it emits is on the infra-red spectrum. when you turn it on and don't see anything, don't panic! Humans cannot see infra-red light. Who can? The IR receiver can! Also, some cameras can pick it up, and it is used in night vision goggles. Most remotes use IR blips to communicate, so with this emitter you could emulate almost any remote! 
 
 <img
   alt="IR Emitter"
@@ -721,8 +722,7 @@ This is a description about what the module is/does so that people will know wha
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The IR emitter has three connections -- power, ground, and S. The S pin, when high, will turn on the IR emitter. Remember that you won't be able to see any light coming out. If you want to test the IR emitter's functionality, the following codes have also incorporated the IR receiver. Make sure the receiver and the emitter are pointed at each other.
 
 <Tabs
   defaultValue="arduino"
@@ -734,16 +734,21 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(2, OUTPUT); // pin 2 is connected to the signal pin of the IR Emitter
+  digitalWrite(2, LOW);
+  pinMode(4, INPUT_PULLUP); // pin 4 is the IR Receiver connection
+  Serial.begin(115200);
 }
-     
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  // put your main code here, to run repeatedly:
+  digitalWrite(2, HIGH);
+  Serial.println(digitalRead(4));
+  delay(100);
+  digitalWrite(2, LOW);
+  Serial.println(digitalRead(4));
+  delay(100);
 }
 ```
 
@@ -772,18 +777,17 @@ while True:
 </Tabs>
 
 ---
-### IR Reciever
+### IR Receiver
 
-This is a description about what the module is/does so that people will know what they can use it for!
-
+The IR receiver is a sensor that measures IR light. You can use this in combination with the IR emitter for easy wireless communication! This emitter is similar to the one you would find in almost any remote-controlled appliance. 
 <img
-  alt="IR Reciever"
+  alt="IR Receiver"
   src={useBaseUrl('img/components/ir_reciever.jpeg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The code below simply demonstrates how to read data from the IR receiver. Point any remote control at the receiver and see the indicator light on the sensor blink rapidly! You can also see the signal in the serial monitor, but be quick because it happens very fast. the signal pin of the module should be connected to pin 6.
+
 
 <Tabs
   defaultValue="arduino"
@@ -795,16 +799,14 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  // put your setup code here, to run once:
+  pinMode(6, INPUT);
+  Serial.begin(115200);
 }
-     
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  Serial.println(digitalRead(6));
 }
 ```
 
@@ -1026,16 +1028,14 @@ while True:
 ---
 ### Light Blocking Module
 
-This is a description about what the module is/does so that people will know what they can use it for!
-
+The light blocking module (HW-487) has a u-shaped component that detects whether something is blocking light from passing between the two 
 <img
   alt="Light Blocking Module"
-  src={useBaseUrl('img/components/light_blocking_module.jpeg')}
+  src="../static/img/components/light_blocking_module.jpeg"
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+The microcontroller should treat this as a digital input device.
 
 <Tabs
   defaultValue="arduino"
@@ -1047,16 +1047,23 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+int lightBlockingSensorPin = 2;
+int ledPin = 14;
+int lightBlockingSensorVal; // define numeric variables val
+void setup ()
+{
+  Serial.begin(9600);
+  pinMode (lightBlockingSensorPin, INPUT) ; 
+  pinMode (ledPin, OUTPUT) ; 
 }
-     
-// the loop function runs over and over again forever
-void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+void loop ()
+{
+  lightBlockingSensorVal = digitalRead (lightBlockingSensorPin) ;
+
+  digitalWrite(ledPin, lightBlockingSensorVal);   // light up LED when no light is detected by sensor
+
+  Serial.print("Light blocking sensor blocked?: ");
+  Serial.println(lightBlockingSensorVal);
 }
 ```
 
@@ -1064,21 +1071,20 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
 import digitalio
-import time
+ 
+lightBlockingSensor = digitalio.DigitalInOut(board.D2) #set light blocking sensor pin
+lightBlockingSensor.direction = digitalio.Direction.INPUT
 
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
+led = digitalio.DigitalInOut(board.D14) #set led pin
 led.direction = digitalio.Direction.OUTPUT
 
-# Loop forever
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+  if lightBlockingSensor.value: #if light detects no light (something is blocking it)
+    led.value = True; # led is on
+  else: #if nothing is blocking the light blocking sensor
+    led.value = False; #led is off
 ```
 
 </TabItem>
@@ -1147,17 +1153,31 @@ while True:
 
 ---
 ### Linear Hall Effect Sensor
-
-This is a description about what the module is/does so that people will know what they can use it for!
+HW-509
+This sensor produces a voltage when placed in a magnetic field. In practice, it is very similar to the digital hall effect sensor (HW-492) and the analog hall effect sensor (HW-495), however, it has an both analog and digital pins.
 
 <img
   alt="Linear Hall Effect Sensor"
-  src={useBaseUrl('img/components/linear_hall_effect_sensor.jpeg')}
+  src={useBaseUrl("img/components/linear_hall_effect_sensor.jpeg")}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+
+
+The linear hall effect sensor is an input device that is used to measure the presence and/or strength of a magnetic field. As labeled on the component itself and in the picture above, the pins from left to right are: Analog input, GND, VDD, Digital input. 
+Key things:
+
+- This sensor can produce an analog or a digital value, as it has an ADC built-in.
+- It has a built-in sensitivity adjustment (fine adjustment). This is the bronze-colored adjuster on the blue piece. You can use your fingernail or flathead screwdriver or something to adjust it. Turning the sensitivity fine adjustment **counter clockwise** makes the analog hall sensor measurement **more sensitive**, and turning it clockwise makes it less sensitive.
+- It has a signal output indication. As shown in the photo below, when a magnet is held near the transistor, the built-in indication light (on the left in the photo) lights up. (This is not programmed by the user, it comes like this.)
+
+<img
+  alt="Linear Hall Effect Sensor with Magnet"
+  src={useBaseUrl("img/components/linear_hall_effect_sensor2.jpeg")}
+  class="component-image"
+/>
+
+When you hold a magnet near the black transistor on the sensor (at the top of the photo), the digital reading should be 1 (HIGH). The analog sensor's reading is a numerical value that is different depending on magnet strength, sensitivity adjustment, magnet proximity, and other factors.
 
 <Tabs
   defaultValue="arduino"
@@ -1169,16 +1189,28 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+int linearHallSensorDigitalPin = 8; // define linear hall sensor digital pin
+int linearHallSensorAnalogPin = 2; // define linear hall sensor analog pin
+//int hallSensorPin = 9;
+//int buttonpin = 3; // define Metal Touch Sensor Interface
+int linearHallSensorDigitalVal, linearHallSensorAnalogVal; // define numeric variables val
+int lineCount = 0;  // there are 30 lines on screen for printing
+void setup ()
+{
+  Serial.begin(9600);
+  // define sensor pins as input interface
+  pinMode (linearHallSensorDigitalPin, INPUT) ; 
+  pinMode (linearHallSensorAnalogPin, INPUT) ; 
 }
-     
-// the loop function runs over and over again forever
-void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+void loop ()
+{
+  linearHallSensorDigitalVal = digitalRead (linearHallSensorDigitalPin) ;
+  linearHallSensorAnalogVal = analogRead (linearHallSensorAnalogPin) ;
+
+  Serial.print("Linear hall sensor - digital: ");
+  Serial.print(linearHallSensorDigitalVal);
+  Serial.print(" , analog: ");
+  Serial.println(linearHallSensorAnalogVal);
 }
 ```
 
@@ -1186,21 +1218,7 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
-import board
-import digitalio
-import time
-
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
-led.direction = digitalio.Direction.OUTPUT
-
-# Loop forever
-while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+# hehe didn't do the circuitpython yet but i will soon -anj
 ```
 
 </TabItem>
