@@ -1180,6 +1180,9 @@ Key things:
 
 When you hold a magnet near the black transistor on the sensor (at the top of the photo), the digital reading should be 1 (HIGH). The analog sensor's reading is a numerical value that is different depending on magnet strength, sensitivity adjustment, magnet proximity, and other factors.
 
+
+Note on the below CircuitPython code: [here](https://learn.adafruit.com/circuitpython-essentials/circuitpython-analog-in) are more details on reading analog input in circuitpython, including an explanation of the `get_voltage(pin)` helper function.
+
 <Tabs
   defaultValue="arduino"
   values={[
@@ -1219,8 +1222,28 @@ void loop ()
 <TabItem value="py">
 
 ```py
-# hehe didn't do the circuitpython yet but i will soon -anj
-```
+import board
+import digitalio
+import analogio
+
+linearHallSensor_analog = analogio.AnalogIn(board.A2) #set light blocking sensor pin
+
+linearHallSensor_digital = digitalio.DigitalInOut(board.D7)
+linearHallSensor_digital.direction = digitalio.Direction.INPUT
+
+led = digitalio.DigitalInOut(board.D14) #set led pin
+led.direction = digitalio.Direction.OUTPUT
+
+def get_voltage(pin):
+  return (pin.value * 3.3) / 65536
+
+
+while True:
+  digitalReading = linearHallSensor_digital.value
+
+  led.value = digitalReading  # set led based on digitalr reading of magnetic field
+  print("digital:", digitalReading, "voltage:", get_voltage(linearHallSensor_analog), "V")
+  ```
 
 </TabItem>
 </Tabs>
@@ -1362,6 +1385,8 @@ This is a photoresistor sensor, which means that it can measure the amount of am
 See the image above to see the gnd, vdd, and data pins. You need to declare this as an input, and please note that you have to select an ANALOG pin and make an ANALOG measurement. 
 Note: The sensor is not very accurate, but should be good enough to distinguish between night and day. 
 
+
+Note on the below CircuitPython code: [here](https://learn.adafruit.com/circuitpython-essentials/circuitpython-analog-in) are more details on reading analog input in circuitpython, including an explanation of the `get_voltage(pin)` helper function.
 <Tabs
   defaultValue="arduino"
   values={[
@@ -1397,8 +1422,8 @@ from analogio import AnalogIn
  
 photo = AnalogIn(board.A2)
 
-def convertToVoltage(pin):
-    return (pin.value * 3) / 65536 #convert it to a voltage value between 0-3V
+def get_voltage(pin):
+    return (pin.value * 3.3) / 65536 #convert it to a voltage value between 0-3V
  
  
 while True:
