@@ -1034,6 +1034,7 @@ The light blocking module (HW-487) has a u-shaped component that detects whether
 <img
   alt="Light Blocking Module"
   src="../static/img/components/light_blocking_module.jpeg"
+  src={useBaseUrl('img/components/light_blocking_module.jpeg')}
   class="component-image"
 />
 
