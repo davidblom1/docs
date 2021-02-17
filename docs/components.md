@@ -906,16 +906,16 @@ while True:
 ---
 ### Large Microphone
 
-This is a description about what the module is/does so that people will know what they can use it for!
+This microphone can detect sound level. 
+Part: HW-485
 
 <img
   alt="Large Microphone"
-  src={useBaseUrl('img/components/large_microphone.jpeg')}
+  src={useBaseUrl('img/components/large_microphone.jpg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+This microphone can work with both analog and digital inputs, but I strongly recommend that you use the analog input pin. The sample code below is done with analog input as well. In the arduino ide, open serial plotter to see the graph of outputs. With circuit python, the printing is done on the lcd. Please see the above image in order to see the pin labels.
 
 <Tabs
   defaultValue="arduino"
@@ -927,16 +927,20 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+int soundPin = A2; // select the input pin for the microphone
+int val = 0; // variable to store the value coming from the sensor
+ 
+void setup () 
+{
+  pinMode (soundPin, INPUT);
+  Serial.begin (115200); //begin the serial
 }
-     
-// the loop function runs over and over again forever
-void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+ 
+void loop () 
+{
+  val = analogRead (soundPin);//read input
+  delay (300);
+  Serial.println (val, DEC);
 }
 ```
 
@@ -944,21 +948,15 @@ void loop() {
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
-import digitalio
 import time
-
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
-led.direction = digitalio.Direction.OUTPUT
-
-# Loop forever
+from analogio import AnalogIn
+ 
+microphone = AnalogIn(board.A2)
+ 
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+    print(get_voltage(photo)) #check what the voltage is and print
+    time.sleep(0.1) #sleep for a 1/10th of a second
 ```
 
 </TabItem>
@@ -2151,16 +2149,16 @@ while True:
 ---
 ### Tracking Sensor
 
-This is a description about what the module is/does so that people will know what they can use it for!
+This is a sensor that can detect if the object in front of the white circle is black or white. You can use this to make a robot car follow a straight line!
+Part: HW-511
 
 <img
   alt="Tracking Sensor"
-  src={useBaseUrl('img/components/tracking_sensor.jpeg')}
+  src={useBaseUrl('img/components/tracking_sensor.jpg')}
   class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected, 
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+Please see the above image to see where the data, gnd, and vdd pins are. If you are testing this code using the arduino IDE, open the serial monitor to see if it is correctly detecting whether the object in front of it is black or white. If you are using circuit python, make sure to look at the lcd display.
 
 <Tabs
   defaultValue="arduino"
@@ -2172,38 +2170,38 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
+const int trackPin = 2; //set these as constants
+int val = 0;
+
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(9600); //start serial
+  pinMode(trackPin, INPUT); //set the tracking sensor as an input
 }
-     
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  val = digitalRead (trackPin) ;// read the values of the tracking sensor
+  Serial.println(val);
+  delay(500); //delay so you don't spam the serial console
 }
+
+
 ```
 
 </TabItem>
 <TabItem value="py">
 
 ```py
-# Import all of the necessary modules.
 import board
 import digitalio
 import time
+ 
+track = digitalio.DigitalInOut(board.D2) #set track sensor pin
+track.direction = digitalio.Direction.INPUT
 
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
-led.direction = digitalio.Direction.OUTPUT
-
-# Loop forever
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+  print(track.value); #print either a 0 or 1
+  sleep(1); # delay for a second
+
 ```
 
 </TabItem>
