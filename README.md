@@ -1,4 +1,6 @@
-# Website
+# USC Makers Docs
+
+Documentation for the club. Published site is available [here](https://viterbimakers.usc.edu/docs/).
 
 This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
 
