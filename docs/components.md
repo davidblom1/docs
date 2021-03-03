@@ -2012,7 +2012,8 @@ while True:
 
 ### Tap Module
 
-This is a description about what the module is/does so that people will know what they can use it for!
+The knock sensor (tap module) is a very simple way to detect knocks or other impacts. It's a very simple design -- there's a spring in a tube that, when shaken, 
+taps against a contact that completes a circuit from the signal pin to ground. The spring is fairly stiff, so a good *thwack* with a pen will register pretty cleanly as a single knock. You could use this to add knock controls to your latest gadget, or even embed it in your desk to be triggered when you rage slam your keyboard!
 
 <img
 alt="Tap Module"
@@ -2020,8 +2021,7 @@ src={useBaseUrl('img/components/tap_module.jpeg')}
 class="component-image"
 />
 
-Now explain everything about how to use the module. This will include how the pins should be connected,
-whether the microcontroller should be treating this an output or input, digital or analog, or if it should be something else entirely.
+Wire the - pin to ground, the middle (+) pin to 3V, and the S pin to an input pin on your Clue. I used pin 4 for the example. Below is an example sketch that registers any knocks to the serial port.
 
 <Tabs
 defaultValue="arduino"
@@ -2033,16 +2033,15 @@ values={[
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(4, INPUT); //connect the knock sensor signal to pin 4
+  Serial.begin(115200); //open your serial monitor to 115200 baud
 }
 
-// the loop function runs over and over again forever
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  // if the knock sensor signal goes low, wwe have been knocked!
+  if(!digitalRead(4)) Serial.println("KNOCK");
+  delay(1);
 }
 ```
 
@@ -2052,19 +2051,34 @@ void loop() {
 ```py
 # Import all of the necessary modules.
 import board
-import digitalio
 import time
+from digitalio import DigitalInOut, Direction, Pull
+from adafruit_clue import clue
 
-# Initialize digital pin 17 as an output.
-led = digitalio.DigitalInOut(board.D17)
-led.direction = digitalio.Direction.OUTPUT
+
+
+# initialize pin 4 as an input with a pullup resistor
+knock_sensor = DigitalInOut(board.D4)
+knock_sensor.direction = Direction.INPUT
+knock_sensor.pull = Pull.UP
+
+# define a simple function to turn an onboard LED on or off each call
+# be warned: these things are BRIGHT
+def toggle_LED():
+    if clue.white_leds:
+        clue.white_leds = False
+    else:
+        clue.white_leds = True
+
 
 # Loop forever
 while True:
-    led.value = True    # Turn LED on
-    time.sleep(0.5)     # Wait half a second
-    led.value = False   # Turn LED off
-    time.sleep(0.5)     # Wait half a second
+    if not knock_sensor.value:
+        print("knock")
+        toggle_LED() 
+        time.sleep(.1)
+
+
 ```
 
 </TabItem>
