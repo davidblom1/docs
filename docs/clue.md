@@ -3,6 +3,8 @@ id: clue
 title: Adafruit Clue
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 ## Overview
 We think the Clue is pretty neat! It's got all sorts of embedded sensors, Bluetooth, and CircuitPython capabilities. It gives you a lot of freedom to choose how you make your projects. The below guide is a really great resource for getting started with the Clue, but if you're looking for some more specific resources, we've catalogued some underneath as well. 
 https://learn.adafruit.com/adafruit-clue/overview
