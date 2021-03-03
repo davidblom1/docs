@@ -13,7 +13,7 @@ https://learn.adafruit.com/adafruit-clue/overview
 
 <img
 alt="Clue pinouts"
-src={useBaseUrl('img/components/adafruit_products_PinoutDraft-2.png')}
+src={useBaseUrl('img/adafruit_products_PinoutDraft-2.png')}
 class="component-image"
 />
 
