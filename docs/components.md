@@ -527,16 +527,46 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+#include <Adafruit_Arcada.h>
+
+Adafruit_Arcada arcada;
+
+int flame_sensor = 4;
+int flame_detected;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(flame_sensor, INPUT);
+
+  arcada.displayBegin();
+
+  for (int i=0; i<250; i+=10) {
+    arcada.setBacklight(i);
+    delay(1);
+  }
+  arcada.display->setCursor(0, 0);
+  arcada.display->setTextWrap(true);
+  arcada.display->setTextSize(2);
+  arcada.display->setTextColor(ARCADA_WHITE, ARCADA_BLACK);
+
 }
-     
-// the loop function runs over and over again forever
-void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+
+void loop()
+{
+  flame_detected = digitalRead(flame_sensor);
+  if (flame_detected == 1)
+  {
+    Serial.println("Flame detected...! take action immediately.");
+    arcada.display->print("FIRE");
+
+  }
+  else
+  {
+    Serial.println("No flame detected. stay cool");
+    arcada.display->print("no flame ");
+  }
+  delay(1000);
 }
 ```
 
@@ -832,17 +862,60 @@ whether the microcontroller should be treating this an output or input, digital 
 <TabItem value="arduino">
 
 ```arduino
-// the setup function runs once when you press reset or power the board
+#include <Adafruit_Arcada.h>
+
+Adafruit_Arcada arcada;
+
+// Arduino pin numbers
+const int SW_pin = 6; // digital pin connected to switch output
+const int X_pin = 0; // analog pin connected to X output - this should be the pin number on the dragontail
+const int Y_pin = 1; // analog pin connected to Y output = this should be equal to the pin number on the dragontail
+ 
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(SW_pin, INPUT);
+  digitalWrite(SW_pin, HIGH);
+  Serial.begin(115200);
+
+  arcada.displayBegin();
+
+  for (int i=0; i<250; i+=10) {
+    arcada.setBacklight(i);
+    delay(1);
+  }
+  arcada.display->setCursor(0, 0);
+  arcada.display->setTextWrap(true);
+  arcada.display->setTextSize(2);
+  arcada.display->setTextColor(ARCADA_WHITE, ARCADA_BLACK);
+  
 }
-     
-// the loop function runs over and over again forever
+ 
 void loop() {
-  digitalToggle(LED_BUILTIN); // turn the LED on (HIGH is the voltage level)
-  delay(500);                // wait for half a second
+  
+  Serial.print("Switch:  ");
+  Serial.print(digitalRead(SW_pin));
+  Serial.print("\n");
+  Serial.print("X-axis: ");
+  Serial.print(analogRead(X_pin));
+  Serial.print("\n");
+  Serial.print("Y-axis: ");
+  Serial.println(analogRead(Y_pin));
+  Serial.print("\n\n");
+
+  arcada.display->setCursor(0, 0);
+
+  arcada.display->print("Switch: ");
+  arcada.display->print(digitalRead(SW_pin));
+  
+  arcada.display->print(" x-axis: ");
+  arcada.display->print(analogRead(X_pin));
+  
+  arcada.display->print(" y-axis: ");
+  arcada.display->print(analogRead(Y_pin));
+ 
+  delay(500);
+
 }
+
 ```
 
 </TabItem>
