@@ -6,7 +6,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
-const features = [
+const features = [];
+const original_features = [
   {
     title: 'Easy to Use',
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
@@ -78,7 +79,6 @@ function Home() {
         </div>
       </header>
       <main>
-        <!--
         {features && features.length > 0 && (
           <section className={styles.features}>
             <div className="container">
@@ -90,7 +90,6 @@ function Home() {
             </div>
           </section>
         )}
-        -->
       </main>
     </Layout>
   );
